@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { OtpInput } from "react-native-otp-entry";
 import { Colors } from "../../color/color";
 import { useNavigation } from "@react-navigation/native";
-import { otp  } from "../../slices/userData";
+import { otp, setToken, signUpData  } from "../../slices/userData";
 import { hideLoader, showLoader } from "../../slices/loaderSlice";
 import { sendOtp, signUp } from "../../services/operations/authAPI";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function OTPVerifications() {
   const user = useSelector((state) => state.userData);
@@ -51,11 +52,13 @@ export default function OTPVerifications() {
       // Save OTP to Redux
       dispatch(otp(enteredOtp));
   
-      // Call signUp API (make sure it's not a thunk now)
-      await signUp(user, navigation);  // pass navigation here if required
+      const res = await signUp({...user, otp: enteredOtp}, navigation);  
+      AsyncStorage.setItem("token", res?.token)
+
+      console.log("Res :", res, user.otp)
+      dispatch(setToken(res?.token));
+      dispatch(signUpData(res?.user))
   
-      // If you want to go to another screen after signup:
-      // navigation.navigate("Home"); or wherever you want
     } catch (error) {
       console.log("Submit Handler Error:", error);
       Alert.alert("Signup Failed", error.message || "Something went wrong.");

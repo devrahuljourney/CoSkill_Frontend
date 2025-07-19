@@ -1,4 +1,4 @@
-const BASE_URL = "http://192.168.2.13:4000/api/v1"
+const BASE_URL = "http://192.168.2.21:4000/api/v1"
 
 // AUTH ENDPOINTS
 export const endpoints = {

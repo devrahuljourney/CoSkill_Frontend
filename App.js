@@ -8,13 +8,17 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import rootReducer from './reducer';
 import GlobalLoader from './component/common/GlobalLoader';
+import { useInitializer } from './utils/Initializer';
+
+const store = configureStore({ reducer: rootReducer });
+
+const InitTrigger = () => {
+  useInitializer(); 
+  return null;
+};
 
 export default function App() {
   const [initialRoute, setInitialRoute] = useState(null);
-  const store = configureStore({
-
-    reducer:rootReducer,
-  });
 
   useEffect(() => {
     const checkFirstTime = async () => {
@@ -39,11 +43,11 @@ export default function App() {
 
   return (
     <Provider store={store}>
+      <InitTrigger />
       <NavigationContainer>
-      <AppNavigation initialRouteName={initialRoute} />
-      <GlobalLoader/>
-      
-    </NavigationContainer>
+        <AppNavigation initialRouteName={initialRoute} />
+        <GlobalLoader />
+      </NavigationContainer>
     </Provider>
   );
 }

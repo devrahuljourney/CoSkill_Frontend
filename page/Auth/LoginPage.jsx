@@ -1,101 +1,127 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Colors } from '../../color/color';
 import GoogleAuth from './GoogleAuth';
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Login } from '../../services/operations/authAPI';
+import { hideLoader, showLoader } from '../../slices/loaderSlice';
+import  { setToken, signUpData } from '../../slices/userData';
 
 export default function LoginPage() {
   const { control, formState: { errors }, handleSubmit } = useForm();
   const [showPassword, setShowPassword] = useState(false);
 
-  const navigate = useNavigation();
-  const d = useSelector((state) => state.userData)
-  const onSubmit = (data) => {
-    console.log(data, firstName);
-    // navigate.navigate("SignUp")
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const onSubmit = async (data) => {
+    try {
+      dispatch(showLoader());
+      const res = await Login(data);
+      if (res?.token) {
+        navigation.navigate("Home");
+      }else {
+        return;
+      }
+      dispatch(setToken(res?.token));
+      dispatch(signUpData(res?.user))
+      console.log("Login Response:", res);
+    } catch (error) {
+      console.log("Error during login:", error);
+      Alert.alert("Login Error", error.message || "Something went wrong");
+    } finally {
+      dispatch(hideLoader());
+    }
   };
 
   return (
-     <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
-        <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.title}>Sign In</Text>
-        <Text style={styles.subtitle}>Hi! Welcome back, you've been missed</Text>
-      </View>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+      <View style={styles.container}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.title}>Sign In</Text>
+          <Text style={styles.subtitle}>Hi! Welcome back, you've been missed</Text>
+        </View>
 
-      {/* Form */}
-      <View style={styles.form}>
-        <View style={styles.inputDiv}>
-
-          {/* Email Field */}
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Email</Text>
-            <Controller
-              control={control}
-              name="email"
-              rules={{ required: true }}
-              render={({ field: { onChange, value } }) => (
-                <TextInput
-                  onChangeText={onChange}
-                  value={value}
-                  placeholder="Email"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  style={styles.input}
-                />
-              )}
-            />
-            {errors.email && <Text style={styles.error}>This field is required.</Text>}
-          </View>
-
-          {/* Password Field */}
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Password</Text>
-            <Controller
-              control={control}
-              name="password"
-              rules={{ required: true }}
-              render={({ field: { onChange, value } }) => (
-                <View style={styles.passwordWrapper}>
+        {/* Form */}
+        <View style={styles.form}>
+          <View style={styles.inputDiv}>
+            {/* Email Field */}
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Email</Text>
+              <Controller
+                control={control}
+                name="email"
+                rules={{ required: true }}
+                render={({ field: { onChange, value } }) => (
                   <TextInput
                     onChangeText={onChange}
                     value={value}
-                    placeholder="Password"
-                    secureTextEntry={!showPassword}
+                    placeholder="Email"
+                    keyboardType="email-address"
                     autoCapitalize="none"
-                    style={[styles.input, { flex: 1, borderWidth: 0 }]}
+                    style={styles.input}
                   />
-                  <TouchableOpacity onPress={() => setShowPassword(prev => !prev)}>
-                  <Icon name={showPassword ? 'eye' : 'eyeo'} size={20} />
+                )}
+              />
+              {errors.email && <Text style={styles.error}>This field is required.</Text>}
+            </View>
 
-                  </TouchableOpacity>
-                </View>
-              )}
-            />
-            {errors.password && <Text style={styles.error}>This field is required.</Text>}
+            {/* Password Field */}
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Password</Text>
+              <Controller
+                control={control}
+                name="password"
+                rules={{ required: true }}
+                render={({ field: { onChange, value } }) => (
+                  <View style={styles.passwordWrapper}>
+                    <TextInput
+                      onChangeText={onChange}
+                      value={value}
+                      placeholder="Password"
+                      secureTextEntry={!showPassword}
+                      autoCapitalize="none"
+                      style={[styles.input, { flex: 1, borderWidth: 0 }]}
+                    />
+                    <TouchableOpacity onPress={() => setShowPassword(prev => !prev)}>
+                      <Icon name={showPassword ? 'eye' : 'eyeo'} size={20} />
+                    </TouchableOpacity>
+                  </View>
+                )}
+              />
+              {errors.password && <Text style={styles.error}>This field is required.</Text>}
+            </View>
+
+            {/* Forgot Password */}
+            <TouchableOpacity style={styles.forgotPassword}>
+              <Text>Forgot Password?</Text>
+            </TouchableOpacity>
           </View>
+        </View>
 
-          {/* Forgot Password */}
-          <TouchableOpacity style={styles.forgotPassword}>
-            <Text>Forgot Password?</Text>
+        {/* Submit Button */}
+        <View style={styles.btn}>
+          <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.loginBtn}>
+            <Text style={styles.loginText}>Log In</Text>
           </TouchableOpacity>
         </View>
-      </View>
 
-      {/* Submit Button */}
-      <View style={styles.btn}>
-        <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.loginBtn}>
-          <Text style={styles.loginText}>Log In</Text>
-        </TouchableOpacity>
+        {/* Google Auth */}
+        <GoogleAuth login={true} />
       </View>
-
-      <GoogleAuth login={true} />
-    </View>
-     </ScrollView>
+    </ScrollView>
   );
 }
 
@@ -105,7 +131,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     width: '100%',
     backgroundColor: Colors.background,
-    marginVertical:50
+    marginVertical: 50,
   },
   header: {
     flex: 1,
@@ -123,25 +149,26 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     gap: 20,
-    width:'100%'
-
+    width: '100%',
   },
   inputGroup: {
-    width:'100%'
+    width: '100%',
   },
   label: {
     fontSize: 17,
     fontWeight: '500',
+    marginBottom: 5,
   },
   input: {
-    width: '95%',
+    width: '100%',
     backgroundColor: Colors.aquaMist,
     borderRadius: 10,
     paddingHorizontal: 20,
+    paddingVertical: 12,
   },
   passwordWrapper: {
     flexDirection: 'row',
-    width: '95%',
+    width: '100%',
     backgroundColor: Colors.aquaMist,
     justifyContent: 'center',
     alignItems: 'center',
@@ -163,10 +190,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 40,
     borderRadius: 10,
-    width:'90%',
-    textAlign:'center',
-    justifyContent:'center',
-    alignItems:'center'
+    width: '90%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   loginText: {
     color: '#fff',
@@ -181,9 +207,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.grey,
     fontWeight: '500',
+    textAlign: 'center',
+    marginHorizontal: 20,
   },
   error: {
     color: 'red',
     fontSize: 12,
+    marginTop: 5,
   },
 });
