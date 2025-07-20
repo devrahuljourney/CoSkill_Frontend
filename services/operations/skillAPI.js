@@ -2,7 +2,7 @@ import { skillEndPoints } from "../api";
 
 const { ASSIGN_SKILL, GET_ALL_SKILL } = skillEndPoints;
 
-export async function assignSkill(offeredSkills, exploreSkills, token, id) {
+export async function assignSkill(offeredSkills, exploreSkills, token, id,location) {
     try {
         const response = await fetch(ASSIGN_SKILL(id), {
             method: "POST",
@@ -10,7 +10,7 @@ export async function assignSkill(offeredSkills, exploreSkills, token, id) {
                 "Content-Type": "application/json",
                 Authorization: token
             },
-            body: JSON.stringify({ offeredSkills, exploreSkills })
+            body: JSON.stringify({ offeredSkills, exploreSkills,location })
         });
 
         const result = await response.json();

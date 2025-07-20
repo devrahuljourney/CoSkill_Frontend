@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import * as Location from 'expo-location';
 import { assignSkill, getAllSkill } from '../../services/operations/skillAPI';
 import { useDispatch, useSelector } from 'react-redux';
 import CommonTemplate from '../../component/ExploreAndOffer/CommonTemplate';
@@ -14,12 +15,10 @@ export default function ExploreAndOfferPage() {
   const [offeredSkills, setOfferedSkills] = useState([]);
   const [step, setStep] = useState(1);
 
-  const { token, _id } = useSelector((state) => state.userData);
+  const { token } = useSelector((state) => state.userData);
   const route = useRoute();
   const dispatch = useDispatch();
-
-  const sto = useAsyncStorage();
-  
+  const navigation = useNavigation();
 
   const fetchAllSkill = async () => {
     try {
@@ -31,7 +30,9 @@ export default function ExploreAndOfferPage() {
     }
   };
 
-  const navigate = useNavigation()
+  useEffect(() => {
+    fetchAllSkill();
+  }, []);
 
   const onSubmit = async () => {
     if (step === 1) {
@@ -39,28 +40,65 @@ export default function ExploreAndOfferPage() {
       return;
     }
 
-    dispatch(showLoader())
+    // 🔔 Show note to user before permission
+    Alert.alert(
+      "Location Access Needed",
+      "We will use your city and state to show you better skill matches. Your exact location will not be stored.",
+      [
+        {
+          text: "Continue",
+          onPress: async () => {
+            dispatch(showLoader());
 
-    const {user} = route.params;
+            try {
+              const { status } = await Location.requestForegroundPermissionsAsync();
+              if (status !== 'granted') {
+                console.warn('Location permission denied');
+                dispatch(hideLoader());
+                return;
+              }
 
-    const res = await assignSkill(offeredSkills, exploreSkills, token, user?._id);
-    dispatch(hideLoader())
+              const location = await Location.getCurrentPositionAsync({});
+              const { latitude, longitude } = location.coords;
 
-    if (res?.success) {
-      const { token: routeToken, user } = route?.params || {};
-      if (routeToken && user) {
-        dispatch(setToken(routeToken));
-        dispatch(signUpData(user));
-      }
-      console.log('RES : ASSIGN', res);
-    } else {
-      console.warn('Assign Skill Failed', res?.message);
-    }
+              const [place] = await Location.reverseGeocodeAsync({ latitude, longitude });
+              const city = place?.city || 'Unknown City';
+              const state = place?.region || 'Unknown State';
+
+              const { user } = route.params;
+              const res = await assignSkill(
+                offeredSkills,
+                exploreSkills,
+                token,
+                user?._id,
+                { city, state }
+              );
+
+              if (res?.success) {
+                const { token: routeToken, user } = route?.params || {};
+                if (routeToken && user) {
+                  dispatch(setToken(routeToken));
+                  dispatch(signUpData(user));
+                }
+                console.log('RES : ASSIGN', res);
+              } else {
+                console.warn('Assign Skill Failed', res?.message);
+              }
+
+            } catch (error) {
+              console.error('Error in onSubmit:', error);
+            }
+
+            dispatch(hideLoader());
+          },
+        },
+        {
+          text: "Cancel",
+          style: "cancel"
+        }
+      ]
+    );
   };
-
-  useEffect(() => {
-    fetchAllSkill();
-  }, []);
 
   return (
     <View style={styles.container}>
