@@ -7,7 +7,8 @@ const initialState = {
   password: "",
   confirmPassword: "",
   otp: "",
-  token: null
+  token: null,
+  _id: null
 };
 
 export const userDataSlice = createSlice({

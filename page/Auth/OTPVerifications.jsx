@@ -56,8 +56,10 @@ export default function OTPVerifications() {
       AsyncStorage.setItem("token", res?.token)
 
       console.log("Res :", res, user.otp)
-      dispatch(setToken(res?.token));
-      dispatch(signUpData(res?.user))
+      // dispatch(setToken(res?.token));
+      // dispatch(signUpData(res?.user))
+      navigation.replace("ExploreAndOffer", { token: res?.token, user: res?.user });
+
   
     } catch (error) {
       console.log("Submit Handler Error:", error);

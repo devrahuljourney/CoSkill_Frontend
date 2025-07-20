@@ -9,6 +9,7 @@ import OTPVerifications from '../page/Auth/OTPVerifications';
 import { ActivityIndicator, View } from 'react-native';
 import useProtector from '../utils/useProtector';
 import Home from '../page/HomePage/Home';
+import ExploreAndOfferPage from '../page/ExploreAndOfferPage/ExploreAndOfferPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,13 +33,17 @@ export default function AppNavigation({ initialRouteName }) {
       screenOptions={{ headerShown: false }}
     >
       {isAuthenticated ? (
+        <>
         <Stack.Screen name="Home" component={Home} />
+        </>
       ) : (
         <>
           <Stack.Screen name="OnBoarding" component={OnBoarding} />
           <Stack.Screen name="Login" component={LoginPage} />
           <Stack.Screen name="SignUp" component={SignUpPage} />
           <Stack.Screen name="OTP" component={OTPVerifications} />
+          <Stack.Screen name ="ExploreAndOffer" component={ExploreAndOfferPage} />
+
         </>
       )}
     </Stack.Navigator>
