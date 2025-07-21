@@ -10,6 +10,8 @@ import rootReducer from './reducer';
 import GlobalLoader from './component/common/GlobalLoader';
 import { useInitializer } from './utils/Initializer';
 
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 const store = configureStore({ reducer: rootReducer });
 
 const InitTrigger = () => {
@@ -43,11 +45,13 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <InitTrigger />
-      <NavigationContainer>
-        <AppNavigation initialRouteName={initialRoute} />
-        <GlobalLoader />
-      </NavigationContainer>
+      <SafeAreaProvider>
+        <InitTrigger />
+        <NavigationContainer>
+          <AppNavigation initialRouteName={initialRoute} />
+          <GlobalLoader />
+        </NavigationContainer>
+      </SafeAreaProvider>
     </Provider>
   );
 }

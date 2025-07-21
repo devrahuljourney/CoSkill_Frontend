@@ -31,7 +31,7 @@ export default function CommonTemplate({
       <View style={styles.topContainer}>
         <View style={styles.stepRow}>
           <Text style={styles.stepText}>Step {step}/{lineLength}</Text>
-          <TouchableOpacity onPress={() => navigate.navigate("Home")} >
+          <TouchableOpacity onPress={() => navigate.navigate("BottomTabs")} >
             <Text style={styles.skip}>Skip →</Text>
           </TouchableOpacity>
         </View>

@@ -1,6 +1,6 @@
 import { skillEndPoints } from "../api";
 
-const { ASSIGN_SKILL, GET_ALL_SKILL } = skillEndPoints;
+const { ASSIGN_SKILL, GET_ALL_SKILL, TRENDING_SKILL_BY_AREA } = skillEndPoints;
 
 export async function assignSkill(offeredSkills, exploreSkills, token, id,location) {
     try {
@@ -42,6 +42,27 @@ export async function getAllSkill() {
 
     } catch (error) {
         console.error("GET ALL SKILL ERROR....", error);
+        return null;
+    }
+}
+
+
+export async function trendingSkillByArea(userId,token) {
+    try {
+        const response = await fetch(TRENDING_SKILL_BY_AREA(userId), {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                 Authorization: token
+            }
+        });
+
+        const result = await response.json();
+        console.log("GET ALL TRENDING SKILL RESPONSE....", result);
+        return result;
+
+    } catch (error) {
+        console.error("GET ALL TRENDING SKILL ERROR....", error);
         return null;
     }
 }

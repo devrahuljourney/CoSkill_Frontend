@@ -30,7 +30,7 @@ export default function LoginPage() {
       dispatch(showLoader());
       const res = await Login(data);
       if (res?.token) {
-        navigation.navigate("Home");
+        navigation.navigate("BottomTabs");
       }else {
         return;
       }

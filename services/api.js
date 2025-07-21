@@ -1,4 +1,4 @@
-const BASE_URL = "http://192.168.2.26:4000/api/v1"
+const BASE_URL = "http://192.168.2.21:4000/api/v1"
 
 // AUTH ENDPOINTS
 export const endpoints = {
@@ -11,5 +11,6 @@ export const endpoints = {
 export const skillEndPoints = {
   CREATE_SKILL : BASE_URL + "/skill/create-skill",
   ASSIGN_SKILL : (userId) => BASE_URL +`/skill/assign-skill/${userId}`,
-  GET_ALL_SKILL : BASE_URL + "/skill/get-all-skill"
+  GET_ALL_SKILL : BASE_URL + "/skill/get-all-skill",
+  TRENDING_SKILL_BY_AREA : (userId) => BASE_URL +`/skill/trending-skill-by-location/${userId}`
 }

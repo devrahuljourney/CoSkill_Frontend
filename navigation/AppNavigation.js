@@ -10,6 +10,7 @@ import { ActivityIndicator, View } from 'react-native';
 import useProtector from '../utils/useProtector';
 import Home from '../page/HomePage/Home';
 import ExploreAndOfferPage from '../page/ExploreAndOfferPage/ExploreAndOfferPage';
+import BottomTabNavigator from './BottomTabNavigation';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,7 +35,7 @@ export default function AppNavigation({ initialRouteName }) {
     >
       {isAuthenticated ? (
         <>
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="BottomTabs" component={BottomTabNavigator} />
         </>
       ) : (
         <>
