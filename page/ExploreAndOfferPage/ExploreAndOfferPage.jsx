@@ -40,7 +40,6 @@ export default function ExploreAndOfferPage() {
       return;
     }
 
-    // 🔔 Show note to user before permission
     Alert.alert(
       "Location Access Needed",
       "We will use your city and state to show you better skill matches. Your exact location will not be stored.",
