@@ -2,12 +2,15 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { logo } from '../../constant/image';
 import Icon from 'react-native-vector-icons/Feather';
+import { useNavigation } from '@react-navigation/native';
 
 export default function TopBar() {
+
+  const navigate = useNavigation()
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={logo} />
-      <TouchableOpacity style={styles.searchBtn}>
+      <TouchableOpacity onPress={() => navigate.navigate("Search")} style={styles.searchBtn}>
         <Icon style={styles.icon} name="search" size={22} color="#333" />
       </TouchableOpacity>
     </View>

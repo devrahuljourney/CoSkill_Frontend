@@ -1,4 +1,4 @@
-const BASE_URL = "http://192.168.2.27:4000/api/v1"
+const BASE_URL = "http://192.168.2.29:4000/api/v1"
 
 // AUTH ENDPOINTS
 export const endpoints = {
@@ -16,5 +16,7 @@ export const skillEndPoints = {
 }
 
 export const userEndpoints = {
-  GET_NEAR_USER : BASE_URL + "/user/get-near-user"
+  GET_NEAR_USER : BASE_URL + "/user/get-near-user",
+  BEST_MATCH : BASE_URL + "/user/best-match",
+  SEARCH: (search) => BASE_URL +`/user/search-match?search=${search}`
 }

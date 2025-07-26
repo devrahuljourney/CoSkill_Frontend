@@ -11,6 +11,7 @@ import useProtector from '../utils/useProtector';
 import Home from '../page/HomePage/Home';
 import ExploreAndOfferPage from '../page/ExploreAndOfferPage/ExploreAndOfferPage';
 import BottomTabNavigator from './BottomTabNavigation';
+import Search from '../page/Search';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,7 @@ export default function AppNavigation({ initialRouteName }) {
       {isAuthenticated ? (
         <>
         <Stack.Screen name="BottomTabs" component={BottomTabNavigator} />
+        <Stack.Screen name = "Search" component={Search} />
         </>
       ) : (
         <>
