@@ -1,18 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Colors } from '../../color/color';
+import { requestUser, removeUserRequest } from '../../services/operations/connectionAPI';
+import { useDispatch, useSelector } from 'react-redux';
+import { hideLoader, showLoader } from '../../slices/loaderSlice';
+import { getUserDataFromStorage } from '../../utils/getUserData';
 
 export default function UserRequestCard({ data }) {
-    const profilePic = data?.profilePic?.trim() && !data.profilePic.includes('multiavatar')
-  ? encodeURI(data.profilePic.trim().replace(/\s/g, ''))
-  : `https://api.dicebear.com/7.x/avataaars/png?seed=${(data?.firstName || 'user').replace(/\s/g, '')}`;
+  const profilePic = data?.profilePic?.trim() && !data.profilePic.includes('multiavatar')
+    ? encodeURI(data.profilePic.trim().replace(/\s/g, ''))
+    : `https://api.dicebear.com/7.x/avataaars/png?seed=${(data?.firstName || 'user').replace(/\s/g, '')}`;
 
-    const onSendRequest = async (id) => {
-        console.log(id)
+  const { token } = useSelector((state) => state.userData);
+  const dispatch = useDispatch();
+
+  const [requested, setRequested] = useState(false);
+
+  useEffect(() => {
+    const checkRequestStatus = async () => {
+      const user = await getUserDataFromStorage();
+      if (user?.requestSent?.includes(data._id)) {
+        setRequested(true);
+      }
+    };
+    checkRequestStatus();
+  }, []);
+
+  const onPressRequest = async (id) => {
+    dispatch(showLoader());
+    let res;
+    if (!requested) {
+      res = await requestUser(id, token);
+    } else {
+      res = await removeUserRequest(id, token);
     }
+
+    if (res?.success) {
+      setRequested(!requested);
+    }
+
+    dispatch(hideLoader());
+  };
+
   return (
     <View style={styles.card}>
-      {/* Header Section */}
+      {/* Header */}
       <View style={styles.header}>
         <Image source={{ uri: profilePic }} style={styles.avatar} />
         <View style={styles.userInfo}>
@@ -23,7 +55,7 @@ export default function UserRequestCard({ data }) {
         </View>
       </View>
 
-      {/* Skills Section */}
+      {/* Skills */}
       <View style={styles.skillSection}>
         <Text style={styles.sectionTitle}>They can teach you:</Text>
         <View style={styles.skillWrap}>
@@ -44,12 +76,14 @@ export default function UserRequestCard({ data }) {
         </View>
       </View>
 
-      {/* Request Button */}
+      {/* Request/Remove Button */}
       <TouchableOpacity
-        onPress={() => onSendRequest(data._id)}
+        onPress={() => onPressRequest(data._id)}
         style={styles.requestBtn}
       >
-        <Text style={styles.requestText}>🤝 Send Request</Text>
+        <Text style={styles.requestText}>
+          {requested ? "❌ Cancel Request" : "🤝 Send Request"}
+        </Text>
       </TouchableOpacity>
     </View>
   );
