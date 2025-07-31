@@ -15,10 +15,10 @@ export default function NearByPeople() {
     try {
       dispatch(showLoader());
       const result = await getNearByUser(token);
-      console.log('RESULT : NEAR BY USER ', result?.users);
+      // console.log('RESULT : NEAR BY USER ', result?.users);
       setUser(result?.users);
     } catch (error) {
-      console.log('ERROR : NEAR BY USER', error);
+      // console.log('ERROR : NEAR BY USER', error);
     } finally {
       dispatch(hideLoader());
     }

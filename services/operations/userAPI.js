@@ -13,7 +13,7 @@ export async function getNearByUser(token) {
         });
 
         const result = await response.json();
-        console.log("GET ALL NEAR USER RESPONSE....", result);
+        // console.log("GET ALL NEAR USER RESPONSE....", result);
         return result;
 
     } catch (error) {
@@ -33,7 +33,7 @@ export async function getBestUser(token) {
         });
 
         const result = await response.json();
-        console.log("GET BEST MATCH RESPONSE....", result);
+        // console.log("GET BEST MATCH RESPONSE....", result);
         return result;
 
     } catch (error) {
@@ -55,14 +55,14 @@ export async function getBestSearh(token, search) {
         },
       });
   
-      console.log("📦 Raw response object:", response);
+    //   console.log("📦 Raw response object:", response);
   
       const result = await response.json();
-      console.log("✅ Parsed response JSON:", result);
+    //   console.log("✅ Parsed response JSON:", result);
   
       return result?.data;
     } catch (error) {
-      console.error("❌ GET BEST SEARCH ERROR:", error);
+    //   console.error("❌ GET BEST SEARCH ERROR:", error);
       return null;
     }
   }

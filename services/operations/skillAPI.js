@@ -14,7 +14,7 @@ export async function assignSkill(offeredSkills, exploreSkills, token, id,locati
         });
 
         const result = await response.json();
-        console.log("ASSIGN SKILL RESPONSE....", result);
+        // console.log("ASSIGN SKILL RESPONSE....", result);
         return result;
         
     } catch (error) {
@@ -37,7 +37,7 @@ export async function getAllSkill() {
         });
 
         const result = await response.json();
-        console.log("GET ALL SKILL RESPONSE....", result);
+        // console.log("GET ALL SKILL RESPONSE....", result);
         return result;
 
     } catch (error) {
@@ -58,7 +58,7 @@ export async function trendingSkillByArea(userId,token) {
         });
 
         const result = await response.json();
-        console.log("GET ALL TRENDING SKILL RESPONSE....", result);
+        // console.log("GET ALL TRENDING SKILL RESPONSE....", result);
         return result;
 
     } catch (error) {

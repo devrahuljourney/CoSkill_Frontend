@@ -5,14 +5,16 @@ import { requestUser, removeUserRequest } from '../../services/operations/connec
 import { useDispatch, useSelector } from 'react-redux';
 import { hideLoader, showLoader } from '../../slices/loaderSlice';
 import { getUserDataFromStorage } from '../../utils/getUserData';
+import { useNavigation } from '@react-navigation/native';
 
-export default function UserRequestCard({ data }) {
+export default function UserRequestCard({ data, joined = false }) {
   const profilePic = data?.profilePic?.trim() && !data.profilePic.includes('multiavatar')
     ? encodeURI(data.profilePic.trim().replace(/\s/g, ''))
     : `https://api.dicebear.com/7.x/avataaars/png?seed=${(data?.firstName || 'user').replace(/\s/g, '')}`;
 
   const { token } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const [requested, setRequested] = useState(false);
 
@@ -50,39 +52,57 @@ export default function UserRequestCard({ data }) {
         <View style={styles.userInfo}>
           <Text style={styles.name}>{data.firstName.trim()}</Text>
           <View style={styles.matchBadge}>
-            <Text style={styles.matchText}>{data.matchPercentage}%</Text>
+            <Text style={styles.matchText}>{data.matchPercentage}% Match</Text>
           </View>
         </View>
       </View>
 
       {/* Skills */}
-      <View style={styles.skillSection}>
-        <Text style={styles.sectionTitle}>They can teach you:</Text>
-        <View style={styles.skillWrap}>
-          {data.matchedToMe.map((skill, i) => (
-            <View key={i} style={styles.teachBadge}>
-              <Text style={styles.badgeText}>{skill}</Text>
-            </View>
-          ))}
-        </View>
+      {!joined && (
+        <View style={styles.skillSection}>
+          <Text style={styles.sectionTitle}>They can teach you:</Text>
+          <View style={styles.skillWrap}>
+            {(data?.matchedToMe || []).map((skill, i) => (
+              <View key={i} style={styles.teachBadge}>
+                <Text style={styles.badgeText}>{skill}</Text>
+              </View>
+            ))}
+          </View>
 
-        <Text style={styles.sectionTitle}>You can teach them:</Text>
-        <View style={styles.skillWrap}>
-          {data.matchedFromMe.map((skill, i) => (
-            <View key={i} style={styles.learnBadge}>
-              <Text style={styles.badgeText}>{skill}</Text>
-            </View>
-          ))}
+          <Text style={styles.sectionTitle}>You can teach them:</Text>
+          <View style={styles.skillWrap}>
+            {(data?.matchedFromMe || []).map((skill, i) => (
+              <View key={i} style={styles.learnBadge}>
+                <Text style={styles.badgeText}>{skill}</Text>
+              </View>
+            ))}
+          </View>
         </View>
-      </View>
+      )}
 
-      {/* Request/Remove Button */}
+      {/* Action Button */}
       <TouchableOpacity
-        onPress={() => onPressRequest(data._id)}
-        style={styles.requestBtn}
+        style={[
+          styles.requestBtn,
+          joined ? styles.joinedBtn : styles.activeBtn,
+        ]}
+        onPress={() =>
+          joined
+            ? navigation.navigate('Calendar', { userId: data._id })
+            : onPressRequest(data._id)
+        }
       >
-        <Text style={styles.requestText}>
-          {requested ? "❌ Cancel Request" : "🤝 Send Request"}
+        <Text
+          style={[
+            styles.requestText,
+            joined ? styles.joinedText : styles.activeText,
+          ]}
+        >
+          {joined
+            ? '✅ View Calendar'
+            : requested
+            ? '❌ Cancel Request'
+            : '🤝 Send Request'}
         </Text>
       </TouchableOpacity>
     </View>
@@ -166,14 +186,24 @@ const styles = StyleSheet.create({
   },
   requestBtn: {
     marginTop: 16,
-    backgroundColor: Colors.primary,
     paddingVertical: 12,
     borderRadius: 10,
     alignItems: 'center',
   },
+  activeBtn: {
+    backgroundColor: Colors.primary,
+  },
+  joinedBtn: {
+    backgroundColor: '#ccc',
+  },
   requestText: {
-    color: '#fff',
     fontWeight: '700',
     fontSize: 16,
+  },
+  activeText: {
+    color: '#fff',
+  },
+  joinedText: {
+    color: '#333',
   },
 });

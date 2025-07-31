@@ -11,10 +11,7 @@ export default function UserProfileCard({ user }) {
 
 
 
-   useEffect(() => {
-    console.log("PROFILE ", profilePic)
-   }, []);
-
+  
 
   const bio = user?.bio || 'No bio available.';
   const name = user?.firstName || 'Unknown';

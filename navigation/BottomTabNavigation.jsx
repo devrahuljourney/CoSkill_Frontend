@@ -8,6 +8,7 @@ import MatchPage from '../page/MatchPage';
 import ChatPage from '../page/ChatPage';
 import ProfilePage from '../page/ProfilePage';
 import { Colors } from '../color/color';
+import ConnectPage from '../page/ConnectPage';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,7 +31,8 @@ export default function BottomTabNavigator() {
           if (route.name === 'Home') iconName = focused ? 'home' : 'home-outline';
           else if (route.name === 'Explore') iconName = focused ? 'search' : 'search-outline';
           else if (route.name === 'Matches') iconName = focused ? 'heart' : 'heart-outline';
-          else if (route.name === 'Chats') iconName = focused ? 'chatbubble' : 'chatbubble-outline';
+          else if (route.name === 'Connect') iconName = focused ? 'people' : 'people-outline';
+
           else if (route.name === 'Profile') iconName = focused ? 'person' : 'person-outline';
 
           return <Ionicons name={iconName} size={22} color={color} />;
@@ -60,7 +62,7 @@ export default function BottomTabNavigator() {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Matches" component={MatchPage} />
-      <Tab.Screen name="Chats" component={ChatPage} />
+      <Tab.Screen name="Connect" component={ConnectPage} />
       <Tab.Screen name="Profile" component={ProfilePage} />
     </Tab.Navigator>
   );

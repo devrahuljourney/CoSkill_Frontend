@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export default function ConnectionCard({ user, type, onAccept, onRemove }) {
-  const profilePic = user?.profilePic?.trim()
-    ? user.profilePic
-    : `https://api.dicebear.com/7.x/avataaars/png?seed=${user?.firstName}`;
+export default function ConnectionCard({ user, type, onAccept, onRemove, joined }) {
+  const profilePic = user?.profilePic?.trim() && !user.profilePic.includes('multiavatar')
+    ? encodeURI(user.profilePic.trim().replace(/\s/g, ''))
+    : `https://api.dicebear.com/7.x/avataaars/png?seed=${(user?.firstName || 'user').replace(/\s/g, '')}`;
 
   return (
     <View style={styles.card}>
@@ -15,14 +16,15 @@ export default function ConnectionCard({ user, type, onAccept, onRemove }) {
       </View>
 
       {type === 'received' && (
-        <TouchableOpacity onPress={() => onAccept(user._id)} style={styles.btnAccept}>
-          <Text style={styles.btnText}>Accept</Text>
-        </TouchableOpacity>
-      )}
+  <TouchableOpacity onPress={() => onAccept(user._id)} style={styles.btnAccept}>
+    <Ionicons name="checkmark" size={20} color="#000" />
+  </TouchableOpacity>
+)}
 
-      <TouchableOpacity onPress={() => onRemove(user._id)} style={styles.btnRemove}>
-        <Text style={styles.btnText}>Remove</Text>
-      </TouchableOpacity>
+<TouchableOpacity onPress={() => onRemove(user._id)} style={styles.btnRemove}>
+  <Ionicons name="close" size={20} color="#000" />
+</TouchableOpacity>
+
     </View>
   );
 }

@@ -75,7 +75,7 @@ import {
         </Text>
   
         <ScrollView contentContainerStyle={{ gap: 10, paddingBottom: 20 }}>
-          {(searchResult.trim() === '' ? data : searchData).map((user, index) => (
+          {(searchResult?.trim() === '' ? data : searchData).map((user, index) => (
             <UserRequestCard key={user._id || index} data={user} />
           ))}
         </ScrollView>

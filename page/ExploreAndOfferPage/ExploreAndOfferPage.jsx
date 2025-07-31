@@ -23,10 +23,10 @@ export default function ExploreAndOfferPage() {
   const fetchAllSkill = async () => {
     try {
       const res = await getAllSkill();
-      console.log('Skill:', res?.skill);
+      // console.log('Skill:', res?.skill);
       setSkill(res.skill || []);
     } catch (error) {
-      console.log('Error in fetching skill:', error);
+      // console.log('Error in fetching skill:', error);
     }
   };
 
@@ -79,7 +79,7 @@ export default function ExploreAndOfferPage() {
                   dispatch(setToken(routeToken));
                   dispatch(signUpData(user));
                 }
-                console.log('RES : ASSIGN', res);
+                // console.log('RES : ASSIGN', res);
               } else {
                 console.warn('Assign Skill Failed', res?.message);
               }

@@ -8,7 +8,7 @@ const { SIGNUP_API, SENDOTP_API, LOGIN_API } = endpoints;
 export async function Login(data) {
   try {
     const response = await apiConnector("POST", LOGIN_API, data);
-    console.log("LOGIN API RESPONSE............", response.data);
+    // console.log("LOGIN API RESPONSE............", response.data);
 
     if (!response.data.success) {
       throw new Error(response.data.message);
@@ -36,7 +36,7 @@ export async function signUp(data, navigate) {
   try {
     const response = await apiConnector("POST", SIGNUP_API, data);
 
-    console.log("SIGNUP API RESPONSE............", response.data);
+    // console.log("SIGNUP API RESPONSE............", response.data);
 
     if (!response.data.success) {
       throw new Error(response.data.message);
