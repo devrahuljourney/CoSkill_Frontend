@@ -61,8 +61,9 @@ export default function BottomTabNavigator() {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Matches" component={MatchPage} />
       <Tab.Screen name="Connect" component={ConnectPage} />
+
+      <Tab.Screen name="Matches" component={MatchPage} />
       <Tab.Screen name="Profile" component={ProfilePage} />
     </Tab.Navigator>
   );

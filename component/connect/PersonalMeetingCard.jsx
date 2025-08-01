@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,8 @@ import { Colors } from '../../color/color';
 
 const PersonalMeetingCard = ({ user }) => {
   const navigation = useNavigation();
+
+
 
   const profilePic =
     user?.profilePic?.trim() && !user.profilePic.includes('multiavatar')
@@ -30,6 +32,11 @@ const PersonalMeetingCard = ({ user }) => {
     }
   };
 
+
+  
+
+
+
   return (
     <View style={styles.card}>
       <TouchableOpacity style={styles.row} onPress={handleViewProfile}>
@@ -46,7 +53,7 @@ const PersonalMeetingCard = ({ user }) => {
       </TouchableOpacity>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Skills Offered</Text>
+        <Text style={styles.sectionTitle}>Can Help With</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.skillRow}>
             {Array.isArray(user?.offeredSkills) && user.offeredSkills.length ? (
@@ -63,7 +70,7 @@ const PersonalMeetingCard = ({ user }) => {
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Skills Exploring</Text>
+        <Text style={styles.sectionTitle}>Want to learn</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.skillRow}>
             {Array.isArray(user?.exploreSkills) && user.exploreSkills.length ? (

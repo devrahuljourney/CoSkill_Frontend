@@ -1,4 +1,4 @@
-const BASE_URL = "http://192.168.2.28:4000/api/v1"
+const BASE_URL = "http://192.168.2.31:4000/api/v1"
 
 // AUTH ENDPOINTS
 export const endpoints = {
@@ -31,5 +31,8 @@ export const connectionsEndpoints = {
 }
 
 export const personalMeetingEndpoints = {
-  GET_AVAILABLE_USE : BASE_URL + "/personal-meeting/get-available-user"
+  GET_AVAILABLE_USE : BASE_URL + "/personal-meeting/get-available-user",
+  GET_BOOKED_SLOT : BASE_URL + "/personal-meeting/get-booked-slot",
+  REQUEST_MEETING : BASE_URL + "/personal-meeting/request-meeting",
+  ACCEPT_MEETING : BASE_URL + "/personal-meeting/accept-meeting"
 }
