@@ -1,6 +1,6 @@
 import axios from "axios";
 import { personalMeetingEndpoints } from "../api";
-const {GET_AVAILABLE_USE, GET_BOOKED_SLOT, REQUEST_MEETING, ACCEPT_MEETING} = personalMeetingEndpoints
+const {GET_AVAILABLE_USE, GET_BOOKED_SLOT, REQUEST_MEETING, ACCEPT_MEETING,GET_MEETING_BY_STATUS, REJECT_MEETING} = personalMeetingEndpoints
 
 export async function getAvailableUser(token) {
     try {
@@ -92,6 +92,56 @@ export async function getBookedSlot(selected, userId, token) {
       console.error("ACCEPT MEETING ERROR:", error);
       if (error.response?.data?.message) {
         console.log("ACCEPT MEETING ERROR MESSAGE:", error.response.data.message);
+        alert(error.response.data.message);
+      }
+      return null;
+    }
+  }
+
+  export async function getMeetingByStatus(status,token) {
+    try {
+      const response = await axios.post(
+        GET_MEETING_BY_STATUS,
+        {status},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        }
+      );
+      console.log("GET MEETING RESPONSE:", response.data);
+      if (response.data?.message) alert(response.data.message);
+      return response.data;
+    } catch (error) {
+      console.error("GET MEETING ERROR:", error);
+      if (error.response?.data?.message) {
+        console.log("GET MEETING ERROR MESSAGE:", error.response.data.message);
+        alert(error.response.data.message);
+      }
+      return null;
+    }
+  }
+
+  export async function rejectMeeting(meetingId, rejectionMessage, token) {
+    try {
+      const response = await axios.post(
+        REJECT_MEETING,
+        {meetingId,rejectionMessage},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        }
+      );
+      console.log("REJECT MEETING RESPONSE:", response.data);
+      if (response.data?.message) alert(response.data.message);
+      return response.data;
+    } catch (error) {
+      console.error("REJECT MEETING ERROR:", error);
+      if (error.response) {
+        console.log("REJECT MEETING ERROR MESSAGE:", error.response);
         alert(error.response.data.message);
       }
       return null;

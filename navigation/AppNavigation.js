@@ -13,6 +13,7 @@ import ExploreAndOfferPage from '../page/ExploreAndOfferPage/ExploreAndOfferPage
 import BottomTabNavigator from './BottomTabNavigation';
 import Search from '../page/Search';
 import CalendarScreen from '../component/connect/CalendarScreen';
+import DisplayMeeting from '../component/connect/ShowMeeting/DisplayMeeting';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +41,8 @@ export default function AppNavigation({ initialRouteName }) {
         <Stack.Screen name="BottomTabs" component={BottomTabNavigator} />
         <Stack.Screen name = "Search" component={Search} />
         <Stack.Screen name='CalendarScreen' component={CalendarScreen} />
+        <Stack.Screen name='DisplayMeeting' component={DisplayMeeting} />
+
         </>
       ) : (
         <>

@@ -9,7 +9,7 @@ import DevToolsScreen from '../../component/common/TempDevBtn'
 
 export default function Home() {
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView contentContainerStyle={{ paddingBottom: 80 }} style={styles.container}>
       <TopBar/>
       <View style={{padding:15}}>
       <ViewMatch/>

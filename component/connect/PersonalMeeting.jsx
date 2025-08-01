@@ -29,15 +29,20 @@ export default function PersonalMeeting() {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView  showsVerticalScrollIndicator={true}
+  contentContainerStyle={{ paddingBottom: 200 }}>
         {users.length === 0 ? (
           <Text style={styles.emptyText}>
             No user found. Send connection request first.
           </Text>
         ) : (
-          users.map((u, idx) => (
+          <View style={styles.viewPort}>
+            {
+              users.map((u, idx) => (
             <PersonalMeetingCard key={u._id || idx} user={u} />
           ))
+            }
+          </View>
         )}
       </ScrollView>
     </View>
@@ -54,4 +59,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     color: 'gray',
   },
+
+  viewPort: {
+    flex:1,
+    marginBottom:20
+  },
+
+
 });

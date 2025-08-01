@@ -3,11 +3,15 @@ import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Colors } from '../color/color';
 import PersonalMeeting from '../component/connect/PersonalMeeting';
+import ShowMeeting from '../component/connect/ShowMeeting/ShowMeeting';
 
 export default function ConnectPage() {
   const navigation = useNavigation();
-  const tabs = ['Personal', 'Group', 'Schedule', 'Rejected'];
+  const tabs = ['Personal', 'Accepted', 'Pending', 'Rejected', 'Group'];
+
   const [selectedTab, setSelectedTab] = useState('Personal');
+  const status = selectedTab.toLowerCase();
+
 
   return (
     <View style={styles.container}>
@@ -53,8 +57,9 @@ export default function ConnectPage() {
         <Text style={styles.contentText}>
           {selectedTab === 'Personal' && (<PersonalMeeting/>)}
           {selectedTab === 'Group' && 'Start or join a group meet'}
-          {selectedTab === 'Schedule' && 'View or create scheduled meets'}
-          {selectedTab === 'Rejected' && 'View connection or meeting requests that were declined'}
+          {selectedTab === 'Accepted' && (<ShowMeeting status={status} />)}
+          {selectedTab === 'Pending' && (<ShowMeeting status={status} />)}
+          {selectedTab === 'Rejected' && (<ShowMeeting status={status} />)}
         </Text>
       </View>
     </View>
