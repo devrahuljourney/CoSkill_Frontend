@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { hideLoader, showLoader } from '../../slices/loaderSlice';
 import { getBookedSlot, requestMeeting } from '../../services/operations/personalMeetingAPI';
 import { getUserDataFromStorage } from '../../utils/getUserData';
+import { sendPushNotification } from '../../services/operations/pushNotificationAPI';
 
 export default function CalendarScreen() {
   const navigation = useNavigation();
@@ -65,7 +66,7 @@ export default function CalendarScreen() {
     const getCurrentUser = await getUserDataFromStorage();
 
     dispatch(showLoader());
-    await requestMeeting(
+    const res = await requestMeeting(
       userId,
       getCurrentUser._id,
       selected,
@@ -73,10 +74,21 @@ export default function CalendarScreen() {
       message,
       token
     );
+
+    console.log("Res :::: ", res)
     setMessage('');
     setSelectedSlot(null);
     await getBookedTime();
+    await sendPushNotification(
+      res?.expoToken, 
+      "New Message",
+      "You’ve got a new message",
+      { type: "chat", chatId: "abc123" } 
+    );
+    
     dispatch(hideLoader());
+
+
     Alert.alert('Requested', 'Meeting request sent!');
   };
 

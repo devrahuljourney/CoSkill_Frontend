@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Login } from '../../services/operations/authAPI';
 import { hideLoader, showLoader } from '../../slices/loaderSlice';
 import  { setToken, signUpData } from '../../slices/userData';
+import { registerForPushNotificationsAsync } from '../../utils/registerForPushNotifications';
 
 export default function LoginPage() {
   const { control, formState: { errors }, handleSubmit } = useForm();
@@ -30,6 +31,7 @@ export default function LoginPage() {
       dispatch(showLoader());
       const res = await Login(data);
       if (res?.token) {
+        await registerForPushNotificationsAsync(res?.user._id)
         navigation.navigate("BottomTabs");
       }else {
         return;

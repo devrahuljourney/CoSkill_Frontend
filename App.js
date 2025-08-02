@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import AppNavigation from './navigation/AppNavigation';
-import { StatusBar } from 'expo-status-bar';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import rootReducer from './reducer';
 import GlobalLoader from './component/common/GlobalLoader';
 import { useInitializer } from './utils/Initializer';
-
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import * as Notifications from 'expo-notifications';
 
 const store = configureStore({ reducer: rootReducer });
 
@@ -20,6 +19,8 @@ const InitTrigger = () => {
 };
 
 export default function App() {
+  const notificationListener = useRef();
+  const responseListener = useRef();
   const [initialRoute, setInitialRoute] = useState(null);
 
   useEffect(() => {
@@ -33,6 +34,22 @@ export default function App() {
       }
     };
     checkFirstTime();
+  }, []);
+
+  // ✅ Notification Listeners
+  useEffect(() => {
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      console.log('Foreground notification received:', notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log('Notification tapped:', response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
   }, []);
 
   if (!initialRoute) {

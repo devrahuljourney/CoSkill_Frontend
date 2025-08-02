@@ -1,1 +1,3 @@
 1. user A and B send request to each other , then if A accept B still A have B in sent.
+
+2. I ran into a bunch of issues while integrating FCM push notifications in a React Native app with Expo. Some commands were outdated, I had to switch from the legacy FCM API to HTTP v1, handled the confusion between different Firebase JSON files, and learned how to use eas credentials properly to upload the right keys. The biggest lesson was understanding how Firebase, Expo, and EAS interact for builds and push notifications.

@@ -1,10 +1,15 @@
-const BASE_URL = "http://192.168.2.28:4000/api/v1"
+import { LOCAL_BASE_URL, PROD_BASE_URL } from '@env';
+console.log(LOCAL_BASE_URL,PROD_BASE_URL);
+
+const BASE_URL = PROD_BASE_URL
+console.log("BASE URL", BASE_URL)
 
 // AUTH ENDPOINTS
 export const endpoints = {
   SENDOTP_API: BASE_URL + "/auth/otp-generate",
   SIGNUP_API: BASE_URL + "/auth/sign-up",
   LOGIN_API: BASE_URL + "/auth/login",
+  PUSH_EXPO_TOKEN : BASE_URL + "/auth/push-expo-token"
   
 }
 

@@ -3,6 +3,7 @@ import { userEndpoints } from "../api";
 const {GET_NEAR_USER, BEST_MATCH, SEARCH} = userEndpoints
 
 export async function getNearByUser(token) {
+  console.log("API ", GET_NEAR_USER)
     try {
         const response = await fetch(GET_NEAR_USER, {
             method: "GET",

@@ -1,8 +1,17 @@
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
+import { endpoints } from '../services/api';
+const {PUSH_EXPO_TOKEN} = endpoints
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
-async function registerForPushNotificationsAsync(userId) {
+export async function registerForPushNotificationsAsync(userId) {
   if (!Device.isDevice) return;
 
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -17,10 +26,12 @@ async function registerForPushNotificationsAsync(userId) {
 
   const token = (await Notifications.getExpoPushTokenAsync()).data;
 
-  // Send token to your backend
-  await fetch('https://your-backend.com/api/save-token', {
+  console.log("Token ", token)
+
+  await fetch(PUSH_EXPO_TOKEN, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ userId, expoToken: token }),
   });
+
 }
