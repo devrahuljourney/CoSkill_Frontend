@@ -6,9 +6,10 @@ import { apiConnector } from "../apiConnector";
 const { SIGNUP_API, SENDOTP_API, LOGIN_API } = endpoints;
 
 export async function Login(data) {
+  console.log(LOGIN_API)
   try {
     const response = await apiConnector("POST", LOGIN_API, data);
-    // console.log("LOGIN API RESPONSE............", response.data);
+    console.log("LOGIN API RESPONSE............", response.data);
 
     if (!response.data.success) {
       throw new Error(response.data.message);

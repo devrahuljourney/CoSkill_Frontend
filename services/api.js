@@ -1,7 +1,8 @@
 import { LOCAL_BASE_URL, PROD_BASE_URL } from '@env';
+
 console.log(LOCAL_BASE_URL,PROD_BASE_URL);
 
-const BASE_URL = PROD_BASE_URL
+const BASE_URL = "http://192.168.2.2:4000/api/v1"
 console.log("BASE URL", BASE_URL)
 
 // AUTH ENDPOINTS
@@ -23,7 +24,8 @@ export const skillEndPoints = {
 export const userEndpoints = {
   GET_NEAR_USER : BASE_URL + "/user/get-near-user",
   BEST_MATCH : BASE_URL + "/user/best-match",
-  SEARCH: (search) => BASE_URL +`/user/search-match?search=${search}`
+  SEARCH: (search) => BASE_URL +`/user/search-match?search=${search}`,
+  GET_USER : (userId) => BASE_URL + `/user/get-user/${userId}`
 }
 
 export const connectionsEndpoints = {

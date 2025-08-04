@@ -1,6 +1,6 @@
 import { userEndpoints } from "../api";
 
-const {GET_NEAR_USER, BEST_MATCH, SEARCH} = userEndpoints
+const {GET_NEAR_USER, BEST_MATCH, SEARCH, GET_USER} = userEndpoints
 
 export async function getNearByUser(token) {
   console.log("API ", GET_NEAR_USER)
@@ -68,3 +68,23 @@ export async function getBestSearh(token, search) {
     }
   }
   
+
+  export async function getUser(userId,token) {
+      try {
+          const response = await fetch(GET_USER(userId), {
+              method: "GET",
+              headers: {
+                  "Content-Type": "application/json",
+                  Authorization: token
+              }
+          });
+  
+          const result = await response.json();
+          // console.log("GET ALL NEAR USER RESPONSE....", result);
+          return result;
+  
+      } catch (error) {
+          console.error("GET  USER ERROR....", error);
+          return null;
+      }
+  }
