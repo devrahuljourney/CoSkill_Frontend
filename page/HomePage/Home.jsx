@@ -16,7 +16,7 @@ export default function Home() {
       </View>
       <TrendingSkill/>
       <NearByPeople/>
-      <DevToolsScreen/>
+      {/* <DevToolsScreen/> */}
     </ScrollView>
   )
 }

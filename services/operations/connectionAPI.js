@@ -16,12 +16,12 @@ export async function requestUser(userId, token) {
       }
     );
     console.log("REQUEST USER RESPONSE:", response.data);
-    // if (response.data?.message) alert(response.data.message);
+    if (response.data?.message) alert(response.data.message);
     return response.data;
   } catch (error) {
     console.error("REQUEST USER ERROR:", error);
-    if (error.response?.data?.message) {
-      console.log("REQUEST USER ERROR MESSAGE:", error.response.data.message);
+    if (error.response) {
+      console.log("REQUEST USER ERROR MESSAGE:", error.response);
       alert(error.response.data.message);
     }
     return null;

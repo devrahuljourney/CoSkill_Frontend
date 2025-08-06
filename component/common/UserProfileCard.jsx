@@ -17,7 +17,7 @@ export default function UserProfileCard({ user }) {
   const name = user?.firstName || 'Unknown';
   const navigation = useNavigation();
   const handleProfilePress = () => {
-    navigation.navigate('Profile', { userId: user._id });
+    navigation.navigate('UserProfile', { userId: user._id });
   };
   return (
     <View style={styles.card}>

@@ -2,7 +2,7 @@ import { LOCAL_BASE_URL, PROD_BASE_URL } from '@env';
 
 console.log(LOCAL_BASE_URL,PROD_BASE_URL);
 
-const BASE_URL = "http://192.168.2.2:4000/api/v1"
+const BASE_URL = "http://192.168.2.11:4000/api/v1"
 console.log("BASE URL", BASE_URL)
 
 // AUTH ENDPOINTS
